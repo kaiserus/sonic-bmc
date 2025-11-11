@@ -1,0 +1,12 @@
+[submodule "src/sonic-stdplus/stdplus"]
+	path = src/sonic-stdplus/stdplus
+	url = https://github.com/openbmc/stdplus.git
+[submodule "/root/sonic-bmc/src/sonic-sdeventplus/sdeventplus"]
+	path = /root/sonic-bmc/src/sonic-sdeventplus/sdeventplus
+	url = https://github.com/openbmc/sdeventplus.git
+[submodule "/root/sonic-bmc/src/sonic-stdplus/stdplus"]
+	path = /root/sonic-bmc/src/sonic-stdplus/stdplus
+	url = https://github.com/openbmc/stdplus.git
+[submodule "/app/sonic-bmc/src/bmcweb/bmcweb"]
+	path = /app/sonic-bmc/src/bmcweb/bmcweb
+	url = https://github.com/kaiserus/bmcweb.git

@@ -1,0 +1,11 @@
+src/bmcweb/bmcweb
+src/phosphor-dbus-interfaces/phosphor-dbus-interfaces
+src/phosphor-logging/phosphor-logging
+src/phosphor-user-manager/phosphor-user-manager
+src/sdeventplus/sdeventplus
+src/stdplus/stdplus
+src/sdeventplus/sdeventplus
+src/CLI11/CLI11*
+src/CLI11/*.tar.gz
+src/nlohmann_json/nlohmann_json
+src/nlohmann_json/include.zip
