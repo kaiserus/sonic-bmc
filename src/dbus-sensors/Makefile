@@ -1,6 +1,6 @@
 # === 获取当前 Makefile 所在目录 ===
 ROOT_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
-PROJ_NAME := stdplus
+PROJ_NAME := dbus-sensors
 PATCH_DIR := $(ROOT_DIR)/patch
 SRC_DIR := $(ROOT_DIR)/$(PROJ_NAME)
 BUILD_DIR := builddir
@@ -19,8 +19,8 @@ all: install
 # === 克隆源码 ===
 clone:
 	@if [ ! -d "$(SRC_DIR)" ]; then \
-		echo "Cloning stdplus..."; \
-		$(GIT) clone https://github.com/openbmc/stdplus.git $(SRC_DIR); \
+		echo "Cloning dbus-sensors..."; \
+		$(GIT) clone https://github.com/openbmc/dbus-sensors.git $(SRC_DIR); \
 	else \
 		echo "$(SRC_DIR) already exists."; \
 	fi
@@ -46,6 +46,7 @@ setup: patch
 			-Db_ndebug=true \
 			-Dstrip=true \
 			-Ddefault_library=static \
+			-Dwerror=false \
 			-Dtests=disabled; \
 	fi
 

@@ -9,3 +9,12 @@ src/CLI11/CLI11*
 src/CLI11/*.tar.gz
 src/nlohmann_json/nlohmann_json
 src/nlohmann_json/include.zip
+src/entity-manager/GSL
+src/entity-manager/entity-manager
+src/boost/boost*
+src/phosphor-power/phosphor-power
+src/libpeci/libpeci
+src/libpldm/libpldm
+src/phosphor-certificate-manager/phosphor-certificate-manager
+src/phosphor-host-ipmid/phosphor-host-ipmid
+src/phosphor-modbus/phosphor-modbus

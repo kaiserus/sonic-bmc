@@ -1,6 +1,6 @@
 # === 获取当前 Makefile 所在目录 ===
 ROOT_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
-PROJ_NAME := stdplus
+PROJ_NAME := webui-vue
 PATCH_DIR := $(ROOT_DIR)/patch
 SRC_DIR := $(ROOT_DIR)/$(PROJ_NAME)
 BUILD_DIR := builddir
@@ -9,8 +9,7 @@ INSTALL_PREFIX ?= /usr/local
 
 # 工具
 GIT := git
-MESON := meson
-NINJA := ninja
+
 
 .PHONY: all clone patch setup build install clean cleanall
 
@@ -19,8 +18,8 @@ all: install
 # === 克隆源码 ===
 clone:
 	@if [ ! -d "$(SRC_DIR)" ]; then \
-		echo "Cloning stdplus..."; \
-		$(GIT) clone https://github.com/openbmc/stdplus.git $(SRC_DIR); \
+		echo "Cloning webui-vue..."; \
+		$(GIT) clone https://github.com/openbmc/webui-vue.git $(SRC_DIR); \
 	else \
 		echo "$(SRC_DIR) already exists."; \
 	fi
@@ -38,24 +37,16 @@ patch: clone
 setup: patch
 	@if [ ! -d "$(BUILD_DIR_ALL)" ]; then \
 		cd $(SRC_DIR) && \
-		$(MESON) setup $(BUILD_DIR) $(SRC_DIR) \
-			--prefix=$(INSTALL_PREFIX) \
-			--buildtype=release \
-			--libdir=lib \
-			-Doptimization=2 \
-			-Db_ndebug=true \
-			-Dstrip=true \
-			-Ddefault_library=static \
-			-Dtests=disabled; \
+		npm install ; \
 	fi
 
 # === 编译 ===
 build: setup
-	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR)
+	cd $(SRC_DIR) && npm run build
 
 # === 安装 ===
 install: build
-	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR) install
+	cd $(SRC_DIR) && mkdir -p $(INSTALL_PREFIX)/www && cp -r dist/* $(INSTALL_PREFIX)/www/
 
 # === 清理 ===
 clean:

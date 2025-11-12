@@ -1,16 +1,10 @@
 # === 获取当前 Makefile 所在目录 ===
 ROOT_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
-PROJ_NAME := stdplus
+BOOSTVERSION := 1.89.0
+PROJ_NAME := boost-$(BOOSTVERSION)
 PATCH_DIR := $(ROOT_DIR)/patch
 SRC_DIR := $(ROOT_DIR)/$(PROJ_NAME)
-BUILD_DIR := builddir
-BUILD_DIR_ALL := $(ROOT_DIR)/$(PROJ_NAME)/builddir
 INSTALL_PREFIX ?= /usr/local
-
-# 工具
-GIT := git
-MESON := meson
-NINJA := ninja
 
 .PHONY: all clone patch setup build install clean cleanall
 
@@ -18,13 +12,18 @@ all: install
 
 # === 克隆源码 ===
 clone:
-	@if [ ! -d "$(SRC_DIR)" ]; then \
-		echo "Cloning stdplus..."; \
-		$(GIT) clone https://github.com/openbmc/stdplus.git $(SRC_DIR); \
-	else \
-		echo "$(SRC_DIR) already exists."; \
-	fi
-	@$(GIT) -C $(SRC_DIR) checkout .  # 或 main,根据实际分支调整
+	@if [ ! -f "$(ROOT_DIR)boost-$(BOOSTVERSION)-cmake.tar.gz" ]; then \
+        echo "Downloading boost-$(BOOSTVERSION)..."; \
+        wget -q -O "$(ROOT_DIR)boost-$(BOOSTVERSION)-cmake.tar.gz" "https://github.com/boostorg/boost/releases/download/boost-$(BOOSTVERSION)/boost-$(BOOSTVERSION)-cmake.tar.gz"; \
+    else \
+        echo "$(ROOT_DIR)boost-$(BOOSTVERSION)-cmake.tar.gz already exists."; \
+    fi; \
+    if [ ! -d "$(SRC_DIR)" ]; then \
+        echo "Extracting $(ROOT_DIR)boost-$(BOOSTVERSION)-cmake.tar.gz..."; \
+        tar xf "$(ROOT_DIR)boost-$(BOOSTVERSION)-cmake.tar.gz" -C "$(ROOT_DIR)"; \
+    else \
+        echo "$(SRC_DIR) already exists."; \
+    fi
 
 # === 打补丁 ===
 patch: clone
@@ -36,26 +35,17 @@ patch: clone
 
 # === 配置构建 ===
 setup: patch
-	@if [ ! -d "$(BUILD_DIR_ALL)" ]; then \
-		cd $(SRC_DIR) && \
-		$(MESON) setup $(BUILD_DIR) $(SRC_DIR) \
-			--prefix=$(INSTALL_PREFIX) \
-			--buildtype=release \
-			--libdir=lib \
-			-Doptimization=2 \
-			-Db_ndebug=true \
-			-Dstrip=true \
-			-Ddefault_library=static \
-			-Dtests=disabled; \
+	@if [ -d "$(SRC_DIR)" ]; then \
+		cd $(SRC_DIR) && ./bootstrap.sh; \
 	fi
 
 # === 编译 ===
 build: setup
-	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR)
+	cd $(SRC_DIR) && ./b2 --prefix=/usr/local --with=all -j$(nproc)
 
 # === 安装 ===
 install: build
-	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR) install
+	cd $(SRC_DIR) && ./b2 install
 
 # === 清理 ===
 clean:

@@ -46,6 +46,7 @@ setup: patch
 			-Db_ndebug=true \
 			-Dstrip=true \
 			-Ddefault_library=static \
+			-Drest=enabled \
 			-Dtests=disabled; \
 	fi
 

@@ -14,6 +14,11 @@ RUN apt update && \
         g++ \
         unzip \
         wget \
+        npm \
+        libi2c-dev \
+        libxml2-dev \
+        libgpiod-dev \
+        liburing-dev \
         zlib1g-dev \
         libssl-dev \
         libpam0g-dev \
