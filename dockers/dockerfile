@@ -19,6 +19,9 @@ RUN apt update && \
         libxml2-dev \
         libgpiod-dev \
         liburing-dev \
+        libcereal-dev \
+        libldap2-dev \
+        libsasl2-dev \
         zlib1g-dev \
         libssl-dev \
         libpam0g-dev \

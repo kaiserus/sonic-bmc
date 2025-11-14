@@ -11,4 +11,4 @@ git diff > my_changes.patch
 
 
 
-docker run -it --privileged -v /root/sonic-bmc:/app/sonic-bmc:rw --rm --network=host --name obmc obmc-debian12:1 bash
+docker run -it --privileged -v /root/sonic-bmc:/app/sonic-bmc:rw -v /var/run/dbus:/var/run/dbus:rw --rm --network=host --name obmc obmc-debian12:1 bash

@@ -46,7 +46,7 @@ build: setup
 
 # === 安装 ===
 install: build
-	cd $(SRC_DIR) && mkdir -p $(INSTALL_PREFIX)/www && cp -r dist/* $(INSTALL_PREFIX)/www/
+	cd $(SRC_DIR) && mkdir -p /usr/share/www && cp -r dist/* /usr/share/www/
 
 # === 清理 ===
 clean:

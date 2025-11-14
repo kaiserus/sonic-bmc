@@ -1,3 +1,4 @@
+#src
 src/bmcweb/bmcweb
 src/phosphor-dbus-interfaces/phosphor-dbus-interfaces
 src/phosphor-logging/phosphor-logging
@@ -18,3 +19,5 @@ src/libpldm/libpldm
 src/phosphor-certificate-manager/phosphor-certificate-manager
 src/phosphor-host-ipmid/phosphor-host-ipmid
 src/phosphor-modbus/phosphor-modbus
+
+bmcweb_persistent_data.json

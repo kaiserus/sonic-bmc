@@ -51,7 +51,7 @@ setup: patch
 
 # === 编译 ===
 build: setup
-	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR)
+	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR) -j1
 
 # === 安装 ===
 install: build
