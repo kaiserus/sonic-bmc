@@ -55,11 +55,14 @@ build: setup
 
 # === 安装 ===
 install: build
-	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR) install
+	@if [ ! -d "$(INSTALL_PREFIX)/lib/systemd/system/multi-user.target.wants" ]; then \
+		cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR) install ;\
+	fi
 
 # === 清理 ===
 clean:
 	@if [ -d "$(BUILD_DIR_ALL)" ]; then rm -rf $(BUILD_DIR_ALL); fi
+	@if [ -d "$(INSTALL_PREFIX)/lib/systemd/system/multi-user.target.wants" ]; then rm -rf $(INSTALL_PREFIX)/lib/systemd/system/multi-user.target.wants; fi
 
 cleanall:
 	rm -rf $(SRC_DIR) $(BUILD_DIR_ALL)

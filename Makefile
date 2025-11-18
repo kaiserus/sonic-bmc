@@ -13,11 +13,11 @@ SUBDIRS := \
 	src/sdeventplus \
 	src/phosphor-dbus-interfaces \
 	src/phosphor-logging \
-	src/phosphor-user-manager \
 	src/phosphor-certificate-manager \
-	src/phosphor-host-ipmid \
 	src/phosphor-modbus \
 	src/entity-manager \
+	src/phosphor-user-manager \
+	src/phosphor-host-ipmid \
 	src/phosphor-power \
 	src/dbus-sensors
 

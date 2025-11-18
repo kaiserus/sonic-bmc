@@ -20,7 +20,7 @@ all: install
 clone:
 	@if [ ! -d "$(SRC_DIR)" ]; then \
 		echo "Cloning entity-manager..."; \
-		$(GIT) clone https://github.com/openbmc/entity-manager.git $(SRC_DIR); \
+		$(GIT) clone https://github.com/kaiserus/entity-manager.git $(SRC_DIR); \
 	else \
 		echo "$(SRC_DIR) already exists."; \
 	fi
