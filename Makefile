@@ -7,6 +7,7 @@ SUBDIRS := \
 	src/nlohmann_json \
 	src/CLI11 \
 	src/sdbusplus \
+	src/gpioplus \
 	src/webui-vue \
 	src/bmcweb \
 	src/stdplus \
@@ -19,8 +20,10 @@ SUBDIRS := \
 	src/phosphor-user-manager \
 	src/phosphor-host-ipmid \
 	src/phosphor-power \
+	src/phosphor-inventory-manager \
+	src/phosphor-objmgr \
+	src/phosphor-state-manager \
 	src/dbus-sensors
-
 
 .PHONY: all $(SUBDIRS) clean
 

@@ -19,5 +19,10 @@ src/libpldm/libpldm
 src/phosphor-certificate-manager/phosphor-certificate-manager
 src/phosphor-host-ipmid/phosphor-host-ipmid
 src/phosphor-modbus/phosphor-modbus
+src/gpioplus/gpioplus
+src/phosphor-inventory-manager/phosphor-inventory-manager
+src/phosphor-objmgr/phosphor-objmgr
+src/phosphor-state-manager/phosphor-state-manager
+
 
 bmcweb_persistent_data.json

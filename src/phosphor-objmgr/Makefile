@@ -1,6 +1,6 @@
 # === 获取当前 Makefile 所在目录 ===
 ROOT_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
-PROJ_NAME := entity-manager
+PROJ_NAME := phosphor-objmgr
 PATCH_DIR := $(ROOT_DIR)/patch
 SRC_DIR := $(ROOT_DIR)/$(PROJ_NAME)
 BUILD_DIR := builddir
@@ -19,22 +19,13 @@ all: install
 # === 克隆源码 ===
 clone:
 	@if [ ! -d "$(SRC_DIR)" ]; then \
-		echo "Cloning entity-manager..."; \
-		$(GIT) clone https://github.com/kaiserus/entity-manager.git $(SRC_DIR); \
+		echo "Cloning sdeventplus..."; \
+		$(GIT) clone https://github.com/openbmc/phosphor-objmgr.git $(SRC_DIR); \
 	else \
 		echo "$(SRC_DIR) already exists."; \
 	fi
 	@$(GIT) -C $(SRC_DIR) checkout .  # 或 main,根据实际分支调整
 
-	@if [ ! -d "$(ROOT_DIR)/GSL" ]; then \
-		echo "Cloning GSL..."; \
-		$(GIT) clone https://github.com/microsoft/GSL.git GSL; \
-	else \
-		echo "GSL already exists."; \
-	fi
-	@if [ ! -d "$(INSTALL_PREFIX)/include/gsl" ]; then \
-		mkdir -p $(INSTALL_PREFIX)/include/gsl && cp -r $(ROOT_DIR)/GSL/include/gsl $(INSTALL_PREFIX)/include ; \
-	fi
 # === 打补丁 ===
 patch: clone
 	@echo "Looking for patches in $(PATCH_DIR)/"
@@ -54,7 +45,6 @@ setup: patch
 			-Db_ndebug=true \
 			-Dstrip=true \
 			-Ddefault_library=static \
-			-Dwerror=false	\
 			-Dtests=disabled; \
 	fi
 

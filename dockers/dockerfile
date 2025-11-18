@@ -33,7 +33,9 @@ RUN apt update && \
         libsystemd-dev \
         libfmt-dev \
         libdbus-1-dev \
+        supervisor \
         python3 \
+        python3-dbus \
         python3-pip \
         python3-yaml && \
     # 清理缓存以减小镜像大小
