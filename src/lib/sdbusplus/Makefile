@@ -8,6 +8,9 @@ BUILD_DIR := builddir
 BUILD_DIR_ALL := $(ROOT_DIR)/$(PROJ_NAME)/builddir
 INSTALL_PREFIX ?= /usr/local
 
+TARGET_DIR := $(abspath $(CURDIR)/../../../target/lib)
+include $(abspath $(ROOT_DIR)/../../package.mk)
+
 # 工具
 GIT := git
 MESON := meson
@@ -59,6 +62,7 @@ build: setup
 install: build
 	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR) install
 	cd $(SRC_DIR)/tools && pip install . --break-system-packages
+	@$(package_deb)
 
 # === 清理 ===
 clean:

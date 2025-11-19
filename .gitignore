@@ -8,14 +8,18 @@ src/lib/libpldm/libpldm
 src/lib/gpioplus/gpioplus
 src/lib/boost/boost*
 src/lib/stdplus/stdplus
+src/lib/sdeventplus/sdeventplus
+
+src/lib/sdbusplus/sdbusplus
+src/lib/sdbusplus/pkgroot
 
 #src
 src/bmcweb/bmcweb
+src/bmcweb/pkgroot
+
 src/phosphor-dbus-interfaces/phosphor-dbus-interfaces
 src/phosphor-logging/phosphor-logging
 src/phosphor-user-manager/phosphor-user-manager
-src/sdeventplus/sdeventplus
-src/sdeventplus/sdeventplus
 src/entity-manager/GSL
 src/entity-manager/entity-manager
 src/phosphor-power/phosphor-power

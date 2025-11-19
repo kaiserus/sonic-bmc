@@ -7,6 +7,9 @@ BUILD_DIR := builddir
 BUILD_DIR_ALL := $(ROOT_DIR)/$(PROJ_NAME)/builddir
 INSTALL_PREFIX ?= /usr/local
 
+TARGET_DIR :="$(abspath $(CURDIR)/../../target)"
+include $(abspath $(ROOT_DIR)/../package.mk)
+
 # 工具
 GIT := git
 MESON := meson
@@ -57,6 +60,7 @@ build: setup
 # === 安装 ===
 install: build
 	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR) install
+	@$(package_deb)
 
 # === 清理 ===
 clean:
