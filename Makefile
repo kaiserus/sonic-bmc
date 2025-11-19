@@ -1,17 +1,17 @@
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib64/pkgconfig
 
 SUBDIRS := \
-	src/boost \
-	src/libpeci \
-	src/libpldm \
-	src/nlohmann_json \
-	src/CLI11 \
-	src/sdbusplus \
-	src/gpioplus \
+	src/lib/boost \
+	src/lib/libpeci \
+	src/lib/libpldm \
+	src/lib/nlohmann_json \
+	src/lib/CLI11 \
+	src/lib/sdbusplus \
+	src/lib/gpioplus \
+	src/lib/stdplus \
+	src/lib/sdeventplus \
 	src/webui-vue \
 	src/bmcweb \
-	src/stdplus \
-	src/sdeventplus \
 	src/phosphor-dbus-interfaces \
 	src/phosphor-logging \
 	src/phosphor-certificate-manager \

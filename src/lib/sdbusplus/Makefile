@@ -1,6 +1,7 @@
+
 # === 获取当前 Makefile 所在目录 ===
 ROOT_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
-PROJ_NAME := sdeventplus
+PROJ_NAME := sdbusplus
 PATCH_DIR := $(ROOT_DIR)/patch
 SRC_DIR := $(ROOT_DIR)/$(PROJ_NAME)
 BUILD_DIR := builddir
@@ -19,8 +20,8 @@ all: install
 # === 克隆源码 ===
 clone:
 	@if [ ! -d "$(SRC_DIR)" ]; then \
-		echo "Cloning sdeventplus..."; \
-		$(GIT) clone https://github.com/openbmc/sdeventplus.git $(SRC_DIR); \
+		echo "Cloning sdbusplus..."; \
+		$(GIT) clone https://github.com/kaiserus/sdbusplus.git $(SRC_DIR); \
 	else \
 		echo "$(SRC_DIR) already exists."; \
 	fi
@@ -45,7 +46,8 @@ setup: patch
 			-Doptimization=2 \
 			-Db_ndebug=true \
 			-Dstrip=true \
-			-Ddefault_library=static \
+			-Ddefault_library=shared \
+			-Dexamples=disabled \
 			-Dtests=disabled; \
 	fi
 
@@ -56,6 +58,7 @@ build: setup
 # === 安装 ===
 install: build
 	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR) install
+	cd $(SRC_DIR)/tools && pip install . --break-system-packages
 
 # === 清理 ===
 clean:

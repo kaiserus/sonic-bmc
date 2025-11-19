@@ -1,6 +1,6 @@
 # === 获取当前 Makefile 所在目录 ===
 ROOT_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
-PROJ_NAME := nlohmann_json
+PROJ_NAME := sdeventplus
 PATCH_DIR := $(ROOT_DIR)/patch
 SRC_DIR := $(ROOT_DIR)/$(PROJ_NAME)
 BUILD_DIR := builddir
@@ -20,13 +20,11 @@ all: install
 clone:
 	@if [ ! -d "$(SRC_DIR)" ]; then \
 		echo "Cloning sdeventplus..."; \
-		if [ ! -f "include.zip" ]; then \
-            wget https://github.com/nlohmann/json/releases/download/v3.11.3/include.zip; \
-        fi; \
-		unzip include.zip -d nlohmann_json;\
+		$(GIT) clone https://github.com/openbmc/sdeventplus.git $(SRC_DIR); \
 	else \
 		echo "$(SRC_DIR) already exists."; \
 	fi
+	@$(GIT) -C $(SRC_DIR) checkout .  # 或 main,根据实际分支调整
 
 # === 打补丁 ===
 patch: clone
@@ -47,7 +45,8 @@ setup: patch
 			-Doptimization=2 \
 			-Db_ndebug=true \
 			-Dstrip=true \
-			-Ddefault_library=static; \
+			-Ddefault_library=shared \
+			-Dtests=disabled; \
 	fi
 
 # === 编译 ===
@@ -57,7 +56,7 @@ build: setup
 # === 安装 ===
 install: build
 	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR) install
-	cp -r $(SRC_DIR)/include/nlohmann $(INSTALL_PREFIX)/include/
+
 # === 清理 ===
 clean:
 	@if [ -d "$(BUILD_DIR_ALL)" ]; then rm -rf $(BUILD_DIR_ALL); fi

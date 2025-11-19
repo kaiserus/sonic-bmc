@@ -1,6 +1,6 @@
 # === 获取当前 Makefile 所在目录 ===
 ROOT_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
-PROJ_NAME := gpioplus
+PROJ_NAME := openbmc-test-automation
 PATCH_DIR := $(ROOT_DIR)/patch
 SRC_DIR := $(ROOT_DIR)/$(PROJ_NAME)
 BUILD_DIR := builddir
@@ -19,8 +19,8 @@ all: install
 # === 克隆源码 ===
 clone:
 	@if [ ! -d "$(SRC_DIR)" ]; then \
-		echo "Cloning gpioplus..."; \
-		$(GIT) clone https://github.com/openbmc/gpioplus.git $(SRC_DIR); \
+		echo "Cloning sdeventplus..."; \
+		$(GIT) clone https://github.com/openbmc/openbmc-test-automation.git $(SRC_DIR); \
 	else \
 		echo "$(SRC_DIR) already exists."; \
 	fi
@@ -39,15 +39,13 @@ setup: patch
 	@if [ ! -d "$(BUILD_DIR_ALL)" ]; then \
 		cd $(SRC_DIR) && \
 		$(MESON) setup $(BUILD_DIR) $(SRC_DIR) \
-			--prefix=$(INSTALL_PREFIX) \
 			--buildtype=release \
 			--libdir=lib \
 			-Doptimization=2 \
 			-Db_ndebug=true \
 			-Dstrip=true \
-			-Dtests=disabled \
-			-Dexamples=false \
-			-Ddefault_library=static; \
+			-Ddefault_library=shared \
+			-Dtests=disabled; \
 	fi
 
 # === 编译 ===

@@ -1,7 +1,6 @@
-
 # === 获取当前 Makefile 所在目录 ===
 ROOT_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
-PROJ_NAME := sdbusplus
+PROJ_NAME := gpioplus
 PATCH_DIR := $(ROOT_DIR)/patch
 SRC_DIR := $(ROOT_DIR)/$(PROJ_NAME)
 BUILD_DIR := builddir
@@ -20,8 +19,8 @@ all: install
 # === 克隆源码 ===
 clone:
 	@if [ ! -d "$(SRC_DIR)" ]; then \
-		echo "Cloning sdbusplus..."; \
-		$(GIT) clone https://github.com/kaiserus/sdbusplus.git $(SRC_DIR); \
+		echo "Cloning gpioplus..."; \
+		$(GIT) clone https://github.com/openbmc/gpioplus.git $(SRC_DIR); \
 	else \
 		echo "$(SRC_DIR) already exists."; \
 	fi
@@ -46,9 +45,9 @@ setup: patch
 			-Doptimization=2 \
 			-Db_ndebug=true \
 			-Dstrip=true \
-			-Ddefault_library=static \
-			-Dexamples=disabled \
-			-Dtests=disabled; \
+			-Dtests=disabled \
+			-Dexamples=false \
+			-Ddefault_library=shared; \
 	fi
 
 # === 编译 ===
@@ -58,7 +57,6 @@ build: setup
 # === 安装 ===
 install: build
 	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR) install
-	cd $(SRC_DIR)/tools && pip install . --break-system-packages
 
 # === 清理 ===
 clean:

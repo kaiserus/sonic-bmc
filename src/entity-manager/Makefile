@@ -53,7 +53,7 @@ setup: patch
 			-Doptimization=2 \
 			-Db_ndebug=true \
 			-Dstrip=true \
-			-Ddefault_library=static \
+			-Ddefault_library=shared \
 			-Dwerror=false	\
 			-Dtests=disabled; \
 	fi
