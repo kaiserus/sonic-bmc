@@ -62,6 +62,7 @@ build: setup
 install: build
 	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR) install
 	cd $(SRC_DIR)/tools && pip install . --break-system-packages
+	@$(meson_package)
 	@$(package_deb)
 
 # === 清理 ===

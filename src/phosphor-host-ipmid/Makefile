@@ -6,7 +6,8 @@ SRC_DIR := $(ROOT_DIR)/$(PROJ_NAME)
 BUILD_DIR := builddir
 BUILD_DIR_ALL := $(ROOT_DIR)/$(PROJ_NAME)/builddir
 INSTALL_PREFIX ?= /usr/local
-
+TARGET_DIR :="$(abspath $(CURDIR)/../../target)"
+include $(abspath $(ROOT_DIR)/../package.mk)
 # 工具
 GIT := git
 MESON := meson
@@ -51,12 +52,13 @@ setup: patch
 
 # === 编译 ===
 build: setup
-	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR)
+	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR) -j1
 
 # === 安装 ===
 install: build
 	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR) install
-
+	@$(meson_package)
+	@$(package_deb)
 # === 清理 ===
 clean:
 	@if [ -d "$(BUILD_DIR_ALL)" ]; then rm -rf $(BUILD_DIR_ALL); fi

@@ -10,10 +10,10 @@ SUBDIRS := \
 	src/lib/gpioplus \
 	src/lib/stdplus \
 	src/lib/sdeventplus \
+	src/lib/phosphor-dbus-interfaces \
+	src/lib/phosphor-logging \
 	src/webui-vue \
 	src/bmcweb \
-	src/phosphor-dbus-interfaces \
-	src/phosphor-logging \
 	src/phosphor-certificate-manager \
 	src/phosphor-modbus \
 	src/entity-manager \
@@ -23,6 +23,8 @@ SUBDIRS := \
 	src/phosphor-inventory-manager \
 	src/phosphor-objmgr \
 	src/phosphor-state-manager \
+	src/phosphor-settingsd \
+	src/phosphor-networkd \
 	src/dbus-sensors
 
 .PHONY: all $(SUBDIRS) clean

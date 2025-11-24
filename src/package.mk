@@ -5,7 +5,6 @@ PKGROOT_DIR := $(ROOT_DIR)/$(PKGROOT)
 CONTROL_FILE :=$(ROOT_DIR)/DEBIAN/control
 
 define package_deb
-	cd $(SRC_DIR) && DESTDIR=$(PKGROOT_DIR) $(NINJA) -C $(BUILD_DIR) install
 	if [ ! -f "$(CONTROL_FILE)" ]; then \
 		echo "not exist"; \
 	else \
@@ -18,6 +17,11 @@ define package_deb
 		mkdir -p "$(TARGET_DIR)"; \
 		mv "$$DEB_NAME" "$(TARGET_DIR)"; \
 	fi
+endef
+
+define meson_package
+	rm -rf $(PKGROOT_DIR) && mkdir -p $(PKGROOT_DIR)
+	cd $(SRC_DIR) && DESTDIR=../../pkgroot $(NINJA) -C $(BUILD_DIR) install
 endef
 
 endif # PACKAGE_MK_INCLUDED

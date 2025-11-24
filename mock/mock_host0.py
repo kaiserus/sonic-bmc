@@ -1,44 +1,40 @@
-#!/usr/bin/python3
-import dbus
-import dbus.service
-import dbus.mainloop.glib
-from gi.repository import GLib
+#!/usr/bin/env python3
+# fake-host0-system.py
+# Requires: pip3 install dbus-next
+import asyncio
+from dbus_next.service import ServiceInterface, dbus_property, PropertyAccess
+from dbus_next.aio import MessageBus
+from dbus_next import BusType
 
-DBUS_NAME = 'xyz.openbmc_project.State.Host'
-DBUS_PATH = '/xyz/openbmc_project/state/host0'
+BUS_NAME = "xyz.openbmc_project.State.Host"
+OBJ_PATH = "/xyz/openbmc_project/state/host0"
+IFACE = "xyz.openbmc_project.State.Host"
+HOST_STATE = "xyz.openbmc_project.State.Host.HostState.Off"
 
-class Host0(dbus.service.Object):
-    def __init__(self, bus):
-        super().__init__(bus, DBUS_PATH)
-        self.current_state = "xyz.openbmc_project.State.Host.HostState.Running"
 
-    @dbus.service.method(dbus.PROPERTIES_IFACE, in_signature='ss', out_signature='v')
-    def Get(self, interface_name, property_name):
-        if interface_name != "xyz.openbmc_project.State.Host":
-            raise dbus.exceptions.DBusException("Unknown interface")
-        if property_name == "CurrentHostState":
-            return self.current_state
-        raise dbus.exceptions.DBusException("Unknown property")
+class Host0(ServiceInterface):
+    def __init__(self):
+        super().__init__(IFACE)
+        self._state = HOST_STATE
 
-    @dbus.service.method(dbus.PROPERTIES_IFACE, in_signature='s', out_signature='a{sv}')
-    def GetAll(self, interface_name):
-        if interface_name == "xyz.openbmc_project.State.Host":
-            return {"CurrentHostState": self.current_state}
-        return {}
+    @dbus_property(access=PropertyAccess.READ)
+    def CurrentHostState(self) -> "s":
+        return self._state
 
-    @dbus.service.method("xyz.openbmc_project.State.Host", in_signature='s')
-    def RequestHostTransition(self, transition):
-        # 这里可以随便打印一下，实际开发时再实现真正的开机关机逻辑
-        print(f"Requested transition: {transition}")
 
-dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-bus = dbus.SystemBus()
+async def main():
+    # 连接 system bus（关键）
+    bus = await MessageBus(bus_type=BusType.SYSTEM).connect()
 
-# 抢占名字（如果已经有同名的会失败，但开发环境一般没有）
-name = dbus.service.BusName(DBUS_NAME, bus)
+    # 导出对象到正确路径
+    bus.export(OBJ_PATH, Host0())
 
-Host0(bus)
-print(f"Mock {DBUS_PATH} 已成功挂上 D-Bus，CurrentHostState = Running")
-GLib.MainLoop().run()
+    # 在 system bus 上请求名字（必须与其他组件一致）
+    await bus.request_name(BUS_NAME)
 
-# busctl tree xyz.openbmc_project.State.Host
+    print(f"{BUS_NAME} exported at {OBJ_PATH} on system bus")
+    await asyncio.get_event_loop().create_future()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

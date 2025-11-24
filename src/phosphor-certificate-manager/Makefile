@@ -55,7 +55,8 @@ build: setup
 
 # === 安装 ===
 install: build
-	@if [ ! -d "$(INSTALL_PREFIX)/lib/systemd/system/multi-user.target.wants" ]; then \
+	@if [ ! -d "$(DESTDIR)/lib/systemd/system/multi-user.target.wants" ]; then \
+		rm -rf $(DESTDIR)//lib/systemd/system/multi-user.target.wants/phosphor-certificate-manager* ;\
 		cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR) install ;\
 	fi
 

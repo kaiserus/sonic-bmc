@@ -1,6 +1,7 @@
 # sonic-bmc
 ## 重建镜像
 	docker rmi obmc-debian12:1 && docker build -t obmc-debian12:1 .
+	docker build -f dockers/dockerfile-slim -t bmc:1 .
 
 ## 打patch:
 	git diff > my_changes.patch
@@ -8,6 +9,11 @@
 	docker run -it --privileged -v /root/sonic-bmc:/app/sonic-bmc:rw -v /var/run/dbus:/var/run/dbus:rw --rm --network=host --name bmc obmc-debian12:1 bash
 
 	docker run -it --privileged -v /root/sonic-bmc:/app/sonic-bmc:rw -v /var/run/dbus:/var/run/dbus:rw --network=host --name bmc obmc-debian12:1 bash
+
+	docker run -it --privileged -v /var/run/dbus:/var/run/dbus:rw --network=host --name runbmc bmc:1 bash
+
+	后台运行
+	docker run -d --privileged -v /var/run/dbus:/var/run/dbus:rw --network=host --name runbmc bmc:1 bash
 
 ## 初始化配置
 	groupadd redfish

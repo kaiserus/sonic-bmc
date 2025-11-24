@@ -7,6 +7,9 @@ BUILD_DIR := builddir
 BUILD_DIR_ALL := $(ROOT_DIR)/$(PROJ_NAME)/builddir
 INSTALL_PREFIX ?= /usr/local
 
+TARGET_DIR :="$(abspath $(CURDIR)/../../target)"
+include $(abspath $(ROOT_DIR)/../package.mk)
+
 # 工具
 GIT := git
 
@@ -46,7 +49,9 @@ build: setup
 
 # === 安装 ===
 install: build
-	cd $(SRC_DIR) && mkdir -p /usr/share/www && cp -r dist/* /usr/share/www/
+	rm -rf $(PKGROOT_DIR) && mkdir -p $(PKGROOT_DIR)/usr/share/www
+	cp -r $(SRC_DIR)/dist/*  $(PKGROOT_DIR)/usr/share/www
+	@$(package_deb)
 
 # === 清理 ===
 clean:

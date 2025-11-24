@@ -60,6 +60,7 @@ build: setup
 # === 安装 ===
 install: build
 	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR) install
+	@$(meson_package)
 	@$(package_deb)
 
 # === 清理 ===

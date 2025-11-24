@@ -1,11 +1,13 @@
 # === 获取当前 Makefile 所在目录 ===
 ROOT_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
-PROJ_NAME := phosphor-logging
+PROJ_NAME := phosphor-settingsd
 PATCH_DIR := $(ROOT_DIR)/patch
 SRC_DIR := $(ROOT_DIR)/$(PROJ_NAME)
 BUILD_DIR := builddir
 BUILD_DIR_ALL := $(ROOT_DIR)/$(PROJ_NAME)/builddir
 INSTALL_PREFIX ?= /usr/local
+TARGET_DIR :="$(abspath $(CURDIR)/../../target)"
+include $(abspath $(ROOT_DIR)/../package.mk)
 
 # 工具
 GIT := git
@@ -19,8 +21,8 @@ all: install
 # === 克隆源码 ===
 clone:
 	@if [ ! -d "$(SRC_DIR)" ]; then \
-		echo "Cloning phosphor-logging..."; \
-		$(GIT) clone https://github.com/openbmc/phosphor-logging.git $(SRC_DIR); \
+		echo "Cloning phosphor-settingsd..."; \
+		$(GIT) clone https://github.com/openbmc/phosphor-settingsd.git $(SRC_DIR); \
 	else \
 		echo "$(SRC_DIR) already exists."; \
 	fi
@@ -46,7 +48,7 @@ setup: patch
 			-Db_ndebug=true \
 			-Dstrip=true \
 			-Ddefault_library=shared \
-			-Dtests=disabled; \
+			-Dwerror=false ; \
 	fi
 
 # === 编译 ===
@@ -56,7 +58,8 @@ build: setup
 # === 安装 ===
 install: build
 	cd $(SRC_DIR) && $(NINJA) -C $(BUILD_DIR) install
-
+	@$(meson_package)
+	@$(package_deb)
 # === 清理 ===
 clean:
 	@if [ -d "$(BUILD_DIR_ALL)" ]; then rm -rf $(BUILD_DIR_ALL); fi
